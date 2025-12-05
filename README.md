@@ -1,0 +1,67 @@
+# Tiny_Custom_CPU
+
+## Introduction
+
+<img src="img/Background.jpg" alt="System Setup" width="500">
+
+This project demonstrates a **Simple CPU** featuring a lightweight **16-bit Integer ALU**.  
+The CPU executes arithmetic and logic operations based on opcodes received via UART.  
+It is implemented on an FPGA platform and can be controlled using a Node.js web interface for real-time computation.
+
+> **Note:**  
+> This CPU architecture is essentially equivalent to a **Processing Element (PE)** in a **Coarse-Grained Reconfigurable Architecture (CGRA)**.  
+> It does **not** follow any standard CPU architecture such as RISC-V, ARM, or MIPS.
+
+---
+
+## ALU Specifications
+
+The ALU operates on **signed 16-bit integers (two’s complement)** and supports the following operations:
+
+The Tiny CPU uses a simple opcode-based protocol to trigger ALU operations:
+
+| Opcode | Mnemonic | Operation       | Description                       |
+|--------|----------|-----------------|-----------------------------------|
+| **0**  | **NOP**  | —               | No operation                      |
+| **1**  | **ADD**  | a + b           | Signed 16-bit integer addition    |
+| **2**  | **SUB**  | a − b           | Signed 16-bit integer subtraction |
+| **3**  | **MUL**  | a × b           | Signed 16-bit integer multiplication (lower 16 bits) |
+| **4**  | **AND**  | a AND b         | Bitwise AND                       |
+| **5**  | **OR**   | a OR b          | Bitwise OR                        |
+| **6**  | **NOT**  | NOT a           | Bitwise NOT (unary, ignores b)    |
+| **7**  | **XOR**  | a XOR b         | Bitwise XOR                       |
+
+- All operations are performed on **16-bit signed integers**.
+- Overflow behavior follows standard **two’s complement wrap-around** (as in typical hardware ALUs).
+- Opcodes above can be extended for branching, memory access, or custom instructions if needed.
+
+---
+
+## System Overview
+
+1. **Hardware Platform:**  
+   Any FPGA board that supports UART communication.
+
+2. **CPU Components:**  
+   - 16-bit Integer ALU  
+   - 8-bit instruction buffer  
+   - 16-bit input/output buffer (a, b, c)  
+   - UART RX/TX module  
+
+3. **Software Components:**  
+   - C code for sending opcodes and operands over UART  
+   - Node.js server for user interaction through a web interface  
+
+4. **Interface:**  
+   A web browser acts as a simple **integer calculator**, sending operations and operands, and displaying the result returned from the Tiny CPU.
+
+5. **Communication Flow:**  
+
+   ```text
+   C Program
+        ↓
+   UART → Tiny CPU on FPGA (ALU executes opcode)
+        ↓
+   Result sent back via UART
+        ↓
+   Displayed on Terminal
