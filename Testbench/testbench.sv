@@ -1,4 +1,4 @@
-module tb_Add_IP;
+module testbench;
     import add_tb_pkg::*;
     logic CLK;
     add_if vif(CLK);
@@ -7,7 +7,7 @@ module tb_Add_IP;
     localparam int NUM_TXN      = 10;
     localparam int NUM_ROUND         = 10;
     // DUT
-    Add_IP dut (
+    TOP dut (
         .CLK    (CLK),
         .RST    (vif.RST),
         .Rx_in  (vif.Rx_in),

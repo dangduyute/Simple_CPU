@@ -2,11 +2,11 @@
 
 ## Introduction
 
-<img src="img/Background.jpg" alt="System Setup" width="500">
+<img src="img/diagram block.png" alt="diagram block" width="500">
 
 This project demonstrates a **Simple CPU** featuring a lightweight **16-bit Integer ALU**.  
 The CPU executes arithmetic and logic operations based on opcodes received via UART.  
-It is implemented on an FPGA platform and can be controlled using a Node.js web interface for real-time computation.
+It is implemented on an FPGA platform and is controlled directly from a main C program.
 
 > **Note:**  
 > This CPU architecture is essentially equivalent to a **Processing Element (PE)** in a **Coarse-Grained Reconfigurable Architecture (CGRA)**.  
@@ -48,20 +48,15 @@ The Tiny CPU uses a simple opcode-based protocol to trigger ALU operations:
    - 16-bit input/output buffer (a, b, c)  
    - UART RX/TX module  
 
-3. **Software Components:**  
-   - C code for sending opcodes and operands over UART  
-   - Node.js server for user interaction through a web interface  
+3. **Software Components:**   
+   - C-based main program for user interaction 
 
 4. **Interface:**  
    A web browser acts as a simple **integer calculator**, sending operations and operands, and displaying the result returned from the Tiny CPU.
 
 5. **Communication Flow:**  
 
-   ```text
-   C Program
-        ↓
-   UART → Tiny CPU on FPGA (ALU executes opcode)
-        ↓
-   Result sent back via UART
-        ↓
-   Displayed on Terminal
+   C ProgramUART → Simple CPU on FPGA → Result sent back via UART → Displayed on Terminal
+6. **Video Demo:**
+   <video src="img/Demo_CPU.mp4" controls width="600"></video>
+   
