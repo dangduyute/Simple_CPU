@@ -58,5 +58,6 @@ The Tiny CPU uses a simple opcode-based protocol to trigger ALU operations:
 
    C ProgramUART → Simple CPU on FPGA → Result sent back via UART → Displayed on Terminal
 6. **Video Demo:**
-   <video src="img/Demo_CPU.mp4" controls width="600"></video>
+   [![DEMO VIDEO](https://img.youtube.com/vi/EzDxxUqb-A4/0.jpg)](https://www.youtube.com/watch?v=EzDxxUqb-A4)
+
    
