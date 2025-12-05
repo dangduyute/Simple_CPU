@@ -1,8 +1,6 @@
-# Tiny_Custom_CPU
+# Simple_CPU
 
 ## Introduction
-
-<img src="img/diagram block.png" alt="diagram block" width="500">
 
 This project demonstrates a **Simple CPU** featuring a lightweight **16-bit Integer ALU**.  
 The CPU executes arithmetic and logic operations based on opcodes received via UART.  
@@ -38,21 +36,20 @@ The Tiny CPU uses a simple opcode-based protocol to trigger ALU operations:
 ---
 
 ## System Overview
+1. **Diagram Block.**
+   <img src="img/diagram block.png" alt="diagram block" width="500">
 
-1. **Hardware Platform:**  
+2. **Hardware Platform:**  
    Any FPGA board that supports UART communication.
 
-2. **CPU Components:**  
+3. **CPU Components:**  
    - 16-bit Integer ALU  
    - 8-bit instruction buffer  
    - 16-bit input/output buffer (a, b, c)  
    - UART RX/TX module  
 
-3. **Software Components:**   
+4. **Software Components:**   
    - C-based main program for user interaction 
-
-4. **Interface:**  
-   A web browser acts as a simple **integer calculator**, sending operations and operands, and displaying the result returned from the Tiny CPU.
 
 5. **Communication Flow:**  
 
