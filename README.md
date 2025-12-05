@@ -37,6 +37,7 @@ The Tiny CPU uses a simple opcode-based protocol to trigger ALU operations:
 
 ## System Overview
 1. **Diagram Block.**
+
    <img src="img/diagram block.png" alt="diagram block" width="500">
 
 2. **Hardware Platform:**  
