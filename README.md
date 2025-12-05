@@ -54,7 +54,7 @@ The Tiny CPU uses a simple opcode-based protocol to trigger ALU operations:
 
 5. **Communication Flow:**  
 
-   C ProgramUART → Simple CPU on FPGA → Result sent back via UART → Displayed on Terminal
+   C Program → UART → Simple CPU on FPGA → Result sent back via UART → Displayed on Terminal
 6. **Video Demo:**
    https://www.youtube.com/watch?v=EzDxxUqb-A4
    
