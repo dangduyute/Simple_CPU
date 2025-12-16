@@ -1,53 +1,119 @@
-# Simple_CPU
+## 2. Testbench (RTL Verification)
 
-## Introduction
-
-This project demonstrates a **Simple CPU** featuring a lightweight **16-bit Integer ALU**.  
-The CPU executes arithmetic and logic operations based on opcodes received via UART.  
-It is implemented on an FPGA platform and is controlled directly from a main C program.
-
-> **Note:**  
-> This CPU architecture is essentially equivalent to a **Processing Element (PE)** in a **Coarse-Grained Reconfigurable Architecture (CGRA)**.  
-> It does **not** follow any standard CPU architecture such as RISC-V, ARM, or MIPS.
+The verification environment is implemented in **SystemVerilog** and follows a **modular, transaction-based testbench architecture**.  
+Although it does not rely on UVM, the structure is inspired by common verification components such as driver, monitor, and scoreboard.
 
 ---
 
-## ALU Specifications
+### 2.1 Testbench Architecture
 
-The ALU operates on **signed 16-bit integers (two’s complement)** and supports the following operations:
+The testbench is composed of the following main components:
 
-The Tiny CPU uses a simple opcode-based protocol to trigger ALU operations:
+- **Interface**
+- **Transaction (Packet)**
+- **Driver**
+- **Monitor**
+- **Scoreboard**
+- **Stimulus / Generator**
+- **Top-level Testbench**
 
-| Opcode | Mnemonic | Operation       | Description                       |
-|--------|----------|-----------------|-----------------------------------|
-| **0**  | **NOP**  | —               | No operation                      |
-| **1**  | **ADD**  | a + b           | Signed 16-bit integer addition    |
-| **2**  | **SUB**  | a − b           | Signed 16-bit integer subtraction |
-| **3**  | **MUL**  | a × b           | Signed 16-bit integer multiplication (lower 16 bits) |
-| **4**  | **AND**  | a AND b         | Bitwise AND                       |
-| **5**  | **OR**   | a OR b          | Bitwise OR                        |
-| **6**  | **NOT**  | NOT a           | Bitwise NOT (unary, ignores b)    |
-| **7**  | **XOR**  | a XOR b         | Bitwise XOR                       |
-
-- All operations are performed on **16-bit signed integers**.
-- Overflow behavior follows standard **two’s complement wrap-around** (as in typical hardware ALUs).
-- Opcodes above can be extended for branching, memory access, or custom instructions if needed.
+Each component has a clear responsibility, improving readability, scalability, and debuggability.
 
 ---
 
-## System Overview
-1. **Diagram Block.**
+### 2.2 Interface
 
-   <img src="img/diagram block.png" alt="diagram block" width="500">
+The `interface` module encapsulates all DUT signals, including:
+- Clock and reset
+- UART transmit and receive signals
+- Control and data signals related to opcode and operands
 
-2. **Hardware Platform:**  
-   Any FPGA board that supports UART communication.
+Using an interface simplifies signal connections and allows verification components to access DUT signals in a clean and structured way.
 
-3. **CPU Components:**  
-   - 16-bit Integer ALU  
-   - 8-bit instruction buffer  
-   - 16-bit input/output buffer (a, b, c)  
-   - UART RX/TX module  
+---
+
+### 2.3 Transaction (Packet)
+
+The `packet` class defines a **transaction object** that represents one CPU operation.
+
+A packet typically contains:
+- Opcode
+- Operand A
+- Operand B
+- Expected result (calculated in software)
+
+This abstraction allows stimulus generation and result checking to be performed at a higher level than raw signal toggling.
+
+---
+
+### 2.4 Driver
+
+The `Driver` component is responsible for:
+- Receiving transaction packets from the stimulus
+- Driving opcode and operand data to the DUT through the interface
+- Emulating UART-based command transmission timing
+
+The driver converts high-level transactions into cycle-accurate signal activity.
+
+---
+
+### 2.5 Monitor
+
+The `Monitor` observes DUT outputs without modifying them.
+
+Its responsibilities include:
+- Capturing results produced by the Simple CPU
+- Packaging observed outputs into transactions
+- Forwarding the collected data to the scoreboard
+
+This passive observation model ensures that verification does not interfere with DUT behavior.
+
+---
+
+### 2.6 Scoreboard
+
+The `Scoreboard` performs **functional verification** by:
+- Comparing DUT results against expected results
+- Reporting pass/fail status for each operation
+- Detecting arithmetic, logic, or protocol mismatches
+
+This component provides automatic result checking and clear debug information when errors occur.
+
+---
+
+### 2.7 Stimulus Generation
+
+The `Stimulus` module generates a sequence of test transactions.
+
+Main behavior:
+- For each test iteration, Stimulus creates a `packet` object and calls `randomize()` to generate **random input values**.
+- After randomization, the expected value is prepared (via `post_randomize()` inside the packet), so the testbench always has a reference result for checking.
+
+Transactions are sent to the driver using mailbox-based communication.
+
+---
+
+### 2.8 Top-Level Testbench
+
+The `testbench` module:
+- Instantiates the DUT
+- Connects all verification components
+- Starts the stimulus execution
+- Controls simulation flow and termination
+
+Simulation logs clearly indicate transaction flow and verification results.
+
+---
+
+### 2.9 Verification Goals
+
+The testbench is designed to:
+- Verify correct opcode decoding
+- Validate ALU computation accuracy
+- Ensure stable UART-based command handling
+- Detect functional mismatches early in simulation
+
+This environment provides confidence in RTL correctness before FPGA deployment
 
 4. **Software Components:**   
    - C-based main program for user interaction 
