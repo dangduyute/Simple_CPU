@@ -1,4 +1,4 @@
-# Simple CPU – RTL Design, Testbench & C Program
+# Simple CPU
 
 This project implements a **Simple CPU core** using **Verilog**, controlled through a **UART interface**, and accompanied by a **C program** for software interaction.  
 The design focuses on a **16-bit signed integer ALU**, where operations are selected via **opcode-based commands** sent from software.
@@ -15,10 +15,8 @@ The Simple CPU executes **one ALU operation per UART command**.
 Each command consists of:
 - **Opcode**: selects the ALU operation
 - **Operand A**: 16-bit signed integer
-- **Operand B**: 16-bit signed integer (ignored for unary operations)
+- **Operand B**: 16-bit signed integer 
 
-All operands and results use **two’s complement 16-bit signed representation**.  
-Arithmetic overflow follows natural wrap-around behavior.
 
 | Opcode | Mnemonic | Operation | Description |
 |------:|----------|-----------|-------------|
