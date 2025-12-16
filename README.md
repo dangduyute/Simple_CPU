@@ -1,6 +1,6 @@
 # Simple CPU – RTL Design, Testbench & C Program
 
-This project implements a **Simple CPU core** using **Verilog**, controlled through a **UART interface**, and accompanied by a **host-side C program** for software interaction.  
+This project implements a **Simple CPU core** using **Verilog**, controlled through a **UART interface**, and accompanied by a **C program** for software interaction.  
 The design focuses on a **16-bit signed integer ALU**, where operations are selected via **opcode-based commands** sent from software.
 
 A **testbench** is provided to verify the RTL behavior, and the **C program** demonstrates how the CPU can be controlled from a terminal, illustrating a basic **HW/SW co-design flow**.
@@ -54,7 +54,6 @@ The UART interface enables communication between the host software and the FPGA.
 Main functions:
 - Receive opcode and operands from the host
 - Transmit computation results back to the host
-- Provide a simple, low-bandwidth control interface
 
 This interface allows the CPU to be controlled entirely from a terminal-based application.
 
@@ -94,10 +93,9 @@ The verification environment is designed to validate the correctness of the RTL 
 
 ### 2.1 Verification Goals
 The testbench is intended to:
-- Verify correct decoding of opcodes
-- Validate ALU computation results
-- Check proper UART data handling
-- Ensure stable behavior under multiple operations
+- Generate **randomized ALU transactions** (opcode and operands).
+- Verify correct **functional decoding of opcodes** inside the Simple CPU
+- Validate **ALU computation correctness** by comparing DUT results against expected reference values
 
 ---
 
@@ -112,13 +110,14 @@ The testbench drives opcode and operand sequences similar to real software usage
 ---
 
 ### 2.3 Test Scenarios
-Typical test scenarios include:
-- Single ALU operation tests
-- Sequential operations with different opcodes
-- Edge cases for signed arithmetic
-- Verification of bitwise logic functions
 
-Each test compares the RTL output against expected software-calculated results.
+Typical test scenarios include:
+- **Randomized ALU transactions** with varying opcodes and operand values
+- **Back-to-back operations** generated without idle cycles between transactions
+- **Signed arithmetic corner cases**, including negative values and overflow wrap-around behavior
+- **Bitwise operation verification** using randomly generated operands
+- Automatic detection of mismatches through **scoreboard-based result comparison**
+
 
 ---
 
@@ -154,8 +153,3 @@ A demonstration video showing real-time control of the Simple CPU via terminal:
 👉 https://www.youtube.com/watch?v=EzDxxUqb-A4
 
 ---
-
-## License
-
-This project is licensed under the **MIT License**.  
-See the `LICENSE` file for details.
