@@ -74,11 +74,10 @@ The ALU output is registered and forwarded to the UART transmit logic.
 
 ---
 
-### 1.4 Control Logic
+### 1.4 Controller
 The control logic:
 - Decodes incoming opcodes
 - Selects the corresponding ALU operation
-- Coordinates data flow between UART and ALU
 - Ensures correct sequencing of receive → compute → transmit
 
 A simple finite state machine (FSM) is used to manage the operation flow.
